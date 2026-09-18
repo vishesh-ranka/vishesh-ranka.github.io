@@ -1,0 +1,12 @@
+{
+  "name": "Vishesh Ranka | Supply Chain & Operations Analyst",
+  "short_name": "Vishesh Ranka",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#EEF2F5",
+  "theme_color": "#0B2545",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

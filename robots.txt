@@ -1,0 +1,5 @@
+# https://vishesh-ranka.github.io/
+User-agent: *
+Allow: /
+
+Sitemap: https://vishesh-ranka.github.io/sitemap.xml
