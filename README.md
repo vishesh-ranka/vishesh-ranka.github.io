@@ -10,15 +10,15 @@ analytics projects, and how to reach me.
 ## Projects linked from the site
 
 **Hierarchical Demand Forecasting & Reconciliation**
-An end to end forecasting pipeline for 30,490 product-store combinations from a 58M row
+An end to end forecasting pipeline for 30,490 product store combinations from a 58M row
 Walmart (M5) dataset, built with DuckDB and LightGBM and reconciled with MinT across five
 business levels.
 [Dashboard](https://vishesh-ranka.github.io/scm-forecasting-project/) ·
 [Code](https://github.com/vishesh-ranka/scm-forecasting-project)
 
-**Multi-Echelon Inventory Optimization Under Demand Uncertainty**
+**Multi Echelon Inventory Optimization Under Demand Uncertainty**
 A linear programming model (PuLP) that allocates safety stock across a 13 node, 3 region
-network under a 95% service level constraint, validated with rolling-window Monte Carlo
+network under a 95% service level constraint, validated with rolling window Monte Carlo
 simulation.
 [Dashboard](https://vishesh-ranka.github.io/scm-inventory-optimization/) ·
 [Code](https://github.com/vishesh-ranka/scm-inventory-optimization)
@@ -39,5 +39,5 @@ Los Angeles, CA
 [visheshsunilranka@gmail.com](mailto:visheshsunilranka@gmail.com) ·
 [LinkedIn](https://linkedin.com/in/vishesh-ranka)
 
-Seeking a Supply Chain / Operations internship for Spring 2026, open to full-time roles
+Seeking a Supply Chain / Operations internship for Spring 2026, open to full time roles
 from May 2027.
