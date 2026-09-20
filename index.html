@@ -61,6 +61,16 @@
 
   --header-h:60px;
   --maxw:1160px;
+
+  /* spacing scale - single source of truth for section rhythm and card padding */
+  --section-y:72px;      /* vertical padding on every .section */
+  --head-gap:32px;       /* section header to first content block */
+  --card-pad-y:22px;     /* inner padding, all card-style elements */
+  --card-pad-x:24px;
+
+  /* heading tiers - card titles vs. items inside a card */
+  --h-card:clamp(1.2rem,2.2vw,1.5rem);
+  --h-item:1.08rem;
 }
 
 /* ============================================================
@@ -115,6 +125,26 @@ ul{margin:0;padding:0;list-style:none}
 .num,.mono{font-family:var(--font-mono);font-variant-ligatures:none;font-feature-settings:"tnum" 1;letter-spacing:-.02em}
 
 /* ============================================================
+   Justified body copy
+   Applies to running prose only - never headings, tags, labels,
+   nav, mono readouts or table rows, which stay left-aligned.
+   Automatic hyphenation runs alongside it so the wider measure
+   does not open up rivers of white space between words.
+   ============================================================ */
+.lede,
+.tabpanel > p,
+.process-grid > div > p,
+.xp-bullets li,
+.contact p{
+  text-align:justify;
+  text-justify:inter-word;
+  -webkit-hyphens:auto;-ms-hyphens:auto;hyphens:auto;
+  hyphenate-limit-chars:7 4 3;
+}
+/* never hyphenate or stretch a mono readout mid-number */
+.num,.mono{-webkit-hyphens:none;-ms-hyphens:none;hyphens:none}
+
+/* ============================================================
    Header / sticky nav
    ============================================================ */
 .site-header{
@@ -158,12 +188,12 @@ ul{margin:0;padding:0;list-style:none}
    ============================================================ */
 section{scroll-margin-top:calc(var(--header-h) + 14px)}
 section:focus{outline:none}
-.section{padding:72px 0}
+.section{padding:var(--section-y) 0}
 .section + .section{border-top:1px solid var(--line-soft)}
 
+/* header row holds the number + title only; full-width rule beneath it */
 .section-head{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  gap:24px;flex-wrap:wrap;margin-bottom:34px;
+  margin-bottom:var(--head-gap);
   padding-bottom:14px;border-bottom:1px solid var(--line);
 }
 .section-head h2{font-size:clamp(1.5rem,3.1vw,2.05rem);display:flex;align-items:baseline;gap:14px}
@@ -171,19 +201,18 @@ section:focus{outline:none}
   font-family:var(--font-mono);font-size:.78rem;font-weight:500;
   color:var(--orange);letter-spacing:.02em;
 }
-.section-note{font-size:.88rem;color:var(--muted);max-width:44ch}
 
 /* ============================================================
    Hero
    ============================================================ */
-.hero{padding:clamp(48px,7vw,86px) 0 60px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.95fr);gap:44px;align-items:start}
+.hero{padding:clamp(48px,7vw,86px) 0 var(--section-y)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(270px,.85fr);gap:44px;align-items:start}
 .hero h1{
   font-size:clamp(2.5rem,6.4vw,4.4rem);
   font-weight:700;letter-spacing:-.035em;margin-bottom:18px;
 }
 .hero h1 .surname{color:var(--muted)}
-.lede{font-size:clamp(1.02rem,1.6vw,1.2rem);max-width:56ch;color:var(--ink)}
+.lede{font-size:clamp(1.02rem,1.6vw,1.2rem);max-width:none;color:var(--ink)}
 .lede strong{font-weight:600}
 
 .availability{
@@ -256,9 +285,9 @@ section:focus{outline:none}
 }
 .project.p2{--c:var(--teal)}
 
-.project-head{padding:26px 28px 0;display:flex;gap:22px;justify-content:space-between;flex-wrap:wrap}
+.project-head{padding:var(--card-pad-y) var(--card-pad-x) 0;display:flex;gap:22px;justify-content:space-between;flex-wrap:wrap}
 .project-id{font-family:var(--font-mono);font-size:.76rem;color:var(--c);font-weight:500;margin-bottom:10px;display:block}
-.project h3{font-size:clamp(1.22rem,2.4vw,1.6rem);max-width:24ch}
+.project h3{font-size:var(--h-card);max-width:28ch}
 .tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
 .tool{
   font-family:var(--font-mono);font-size:.7rem;color:var(--muted);
@@ -267,7 +296,7 @@ section:focus{outline:none}
 
 /* tabs */
 .tablist{
-  display:flex;gap:0;margin:22px 0 0;padding:0 28px;
+  display:flex;gap:0;margin:22px 0 0;padding:0 var(--card-pad-x);
   border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;
 }
 .tablist::-webkit-scrollbar{display:none}
@@ -280,9 +309,9 @@ section:focus{outline:none}
 .tab:first-child{padding-left:0}
 .tab:hover{color:var(--ink)}
 .tab[aria-selected="true"]{color:var(--c);border-bottom-color:var(--c);font-weight:500}
-.tabpanel{padding:26px 28px 28px}
+.tabpanel{padding:var(--card-pad-y) var(--card-pad-x) calc(var(--card-pad-y) + 4px)}
 .tabpanel[hidden]{display:none}
-.tabpanel > p{max-width:76ch}
+.tabpanel > p{max-width:none}
 
 /* stat grid inside "The Numbers" */
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-bottom:22px}
@@ -293,7 +322,7 @@ section:focus{outline:none}
 
 /* project links */
 .project-foot{
-  padding:18px 28px;border-top:1px solid var(--line);
+  padding:18px var(--card-pad-x);border-top:1px solid var(--line);
   display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:rgba(238,242,245,.5);
 }
 .project .btn-primary{background:var(--c);border-color:var(--c)}
@@ -302,52 +331,9 @@ section:focus{outline:none}
 .project .btn-ghost:hover{background:var(--c);color:#fff}
 
 /* ============================================================
-   Network diagram
-   ============================================================ */
-.diagram-block{margin-top:26px;border:1px solid var(--line);background:var(--bg)}
-.diagram-cap{
-  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
-  padding:11px 16px;border-bottom:1px solid var(--line);
-  font-family:var(--font-mono);font-size:.72rem;color:var(--muted);
-}
-.diagram-cap b{color:var(--ink);font-weight:500}
-.diagram-wrap{position:relative;padding:14px 10px}
-.diagram{display:block;width:100%;height:auto;touch-action:pan-y}
-
-.edge{fill:none;stroke:rgba(11,37,69,.22);stroke-width:1.1;transition:stroke .18s ease,stroke-width .18s ease,opacity .18s ease}
-.node{cursor:pointer}
-.node .shape{fill:#fff;stroke:var(--ink);stroke-width:1.3;transition:fill .18s ease,stroke .18s ease}
-.node .label{font-family:var(--font-mono);font-size:10px;fill:var(--muted);transition:fill .18s ease}
-.node.supplier .shape{fill:var(--ink)}
-.node:hover .shape,.node:focus-visible .shape{fill:var(--teal);stroke:var(--teal)}
-.node:hover .label,.node:focus-visible .label{fill:var(--ink)}
-.node:focus{outline:none}
-.node:focus-visible .focus-ring{stroke:var(--orange);stroke-width:1.5;opacity:1}
-.focus-ring{fill:none;stroke:transparent;opacity:0}
-
-.diagram.is-active .edge{opacity:.22}
-.diagram.is-active .node{opacity:.34}
-.diagram.is-active .edge.hl{opacity:1;stroke:var(--teal);stroke-width:2}
-.diagram.is-active .node.hl{opacity:1}
-.diagram.is-active .node.hl .shape{fill:var(--teal);stroke:var(--teal)}
-.diagram.is-active .node.hl.supplier .shape{fill:var(--ink);stroke:var(--ink)}
-.diagram.is-active .node.hl .label{fill:var(--ink)}
-
-.tip{
-  position:absolute;z-index:5;pointer-events:none;opacity:0;
-  transform:translate(-50%,-112%);
-  background:var(--ink);color:#fff;padding:9px 12px;max-width:250px;
-  font-family:var(--font-mono);font-size:.71rem;line-height:1.55;
-  transition:opacity .14s ease;
-}
-.tip.show{opacity:1}
-.tip b{display:block;font-weight:700;color:#fff;margin-bottom:3px}
-.tip span{color:rgba(255,255,255,.76)}
-
-/* ============================================================
    Process
    ============================================================ */
-.process-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.85fr);gap:40px;align-items:start}
+.process-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.72fr);gap:40px;align-items:start}
 .chain{display:grid;gap:0;border:1px solid var(--line);background:var(--panel)}
 .chain-step{padding:18px 20px;border-bottom:1px solid var(--line-soft);display:flex;gap:18px;align-items:flex-start}
 .chain-step:last-child{border-bottom:0}
@@ -357,18 +343,20 @@ section:focus{outline:none}
 .chain-step .c-label{font-size:.84rem;line-height:1.5}
 .chain-step .c-label b{display:block;font-family:var(--font-mono);font-size:.73rem;font-weight:500;color:var(--ink);margin-bottom:3px}
 .chain-step .c-label span{color:var(--muted)}
-.process-grid > div > p{max-width:64ch}
+.process-grid > div > p{max-width:none}
 
 /* ============================================================
    Skills
    ============================================================ */
-.skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:20px}
-.skill-group{background:var(--panel);border:1px solid var(--line);padding:22px}
-.skill-group h3{font-size:1rem;margin-bottom:15px}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
+/* tighter internal rhythm than other cards - tag lists read as dense lists,
+   not prose, so the generous gaps left too much air between groups */
+.skill-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.skill-group{background:var(--panel);border:1px solid var(--line);padding:var(--card-pad-y) var(--card-pad-x)}
+.skill-group h3{font-size:var(--h-item);margin-bottom:11px}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
 .tag{
-  font-size:.78rem;padding:5px 9px;border:1px solid var(--line);
-  background:var(--bg);color:var(--ink);line-height:1.35;
+  font-size:.78rem;padding:4px 8px;border:1px solid var(--line);
+  background:var(--bg);color:var(--ink);line-height:1.3;
 }
 .skill-group:nth-child(1) h3{border-left:3px solid var(--orange);padding-left:10px;margin-left:-13px}
 .skill-group:nth-child(2) h3{border-left:3px solid var(--teal);padding-left:10px;margin-left:-13px}
@@ -380,7 +368,7 @@ section:focus{outline:none}
 .xp{display:grid;gap:20px}
 .xp-item{
   background:var(--panel);border:1px solid var(--line);
-  border-left:3px solid var(--ink);padding:24px 26px;
+  border-left:3px solid var(--ink);padding:var(--card-pad-y) var(--card-pad-x);
 }
 .xp-item:nth-child(1){border-left-color:var(--orange)}
 .xp-item:nth-child(2){border-left-color:var(--teal)}
@@ -388,7 +376,7 @@ section:focus{outline:none}
   display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:baseline;
   padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid var(--line-soft);
 }
-.xp-head h3{font-size:1.1rem;margin-bottom:4px}
+.xp-head h3{font-size:var(--h-item);margin-bottom:4px}
 .xp-org{font-size:.9rem;color:var(--muted)}
 .xp-meta{font-family:var(--font-mono);font-size:.74rem;color:var(--muted);text-align:right;line-height:1.7}
 .xp-meta span{display:block}
@@ -400,7 +388,7 @@ section:focus{outline:none}
 .xp-chip b{color:var(--ink);font-weight:700;letter-spacing:-.02em}
 .xp-item:nth-child(1) .xp-chip b{color:var(--orange)}
 .xp-item:nth-child(2) .xp-chip b{color:var(--teal)}
-.xp-bullets li{position:relative;padding-left:20px;margin-bottom:11px;font-size:.93rem;line-height:1.6;max-width:86ch}
+.xp-bullets li{position:relative;padding-left:20px;margin-bottom:11px;font-size:.93rem;line-height:1.6;max-width:none}
 .xp-bullets li:last-child{margin-bottom:0}
 .xp-bullets li::before{content:"";position:absolute;left:0;top:.72em;width:10px;height:1px;background:var(--muted)}
 
@@ -410,15 +398,15 @@ section:focus{outline:none}
 .record{background:var(--panel);border:1px solid var(--line)}
 .record li{
   display:grid;grid-template-columns:1fr auto;gap:10px 24px;align-items:baseline;
-  padding:18px 22px;border-bottom:1px solid var(--line-soft);
+  padding:18px var(--card-pad-x);border-bottom:1px solid var(--line-soft);
 }
 .record li:last-child{border-bottom:0}
-.record .r-role{font-family:var(--font-head);font-weight:600;font-size:1.02rem;letter-spacing:-.015em}
+.record .r-role{font-family:var(--font-head);font-weight:600;font-size:var(--h-item);letter-spacing:-.015em}
 .record .r-org{display:block;font-size:.87rem;color:var(--muted);margin-top:3px}
 .record .r-date{font-family:var(--font-mono);font-size:.75rem;color:var(--muted);white-space:nowrap}
 /* consolidated institution entry: org name leads, credentials listed beneath */
 .record .r-org-lead{
-  display:block;font-family:var(--font-head);font-weight:600;font-size:1.02rem;
+  display:block;font-family:var(--font-head);font-weight:600;font-size:var(--h-item);
   letter-spacing:-.015em;color:var(--ink);margin-top:0
 }
 .record .r-org-lead + .r-role{
@@ -436,9 +424,8 @@ section:focus{outline:none}
 }
 .contact .section-head{border-bottom-color:rgba(255,255,255,.18)}
 .contact h2 .idx{color:var(--orange)}
-.contact .section-note{color:rgba(255,255,255,.66)}
-.contact-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.8fr);gap:44px;align-items:start}
-.contact p{color:rgba(255,255,255,.82);max-width:54ch}
+.contact-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.7fr);gap:44px;align-items:start}
+.contact p{color:rgba(255,255,255,.82);max-width:none}
 .contact-list{margin-top:26px;display:grid;gap:0;border-top:1px solid rgba(255,255,255,.16)}
 .contact-list li{
   display:grid;grid-template-columns:96px 1fr;gap:16px;align-items:baseline;
@@ -474,13 +461,12 @@ section:focus{outline:none}
   .metric:nth-child(-n+2){border-bottom:1px solid var(--line-soft)}
 }
 @media (max-width:680px){
+  /* retune the shared scale once; every card follows automatically */
+  :root{--section-y:54px;--head-gap:26px;--card-pad-y:18px;--card-pad-x:18px}
   .wrap{padding-inline:18px}
-  .section{padding:54px 0}
   .mark .mark-sub{display:none}
   .nav a{padding:8px 9px;font-size:.72rem}
   .nav a::after{left:9px;right:9px}
-  .project-head,.tabpanel,.project-foot{padding-inline:18px}
-  .tablist{padding-inline:18px}
   .metric-strip{grid-template-columns:1fr}
   .metric{border-right:0;border-bottom:1px solid var(--line-soft)}
   .metric:last-child{border-bottom:0}
@@ -488,9 +474,6 @@ section:focus{outline:none}
   .contact-list li{grid-template-columns:1fr;gap:2px}
   .chain-step{flex-direction:column;gap:8px}
   .btn{flex:1 1 auto;justify-content:center}
-}
-@media (max-width:420px){
-  .diagram-wrap{padding:10px 2px}
 }
 
 /* ============================================================
@@ -507,7 +490,7 @@ section:focus{outline:none}
 }
 
 @media print{
-  .site-header,.diagram-block,.btn-row{display:none}
+  .site-header,.btn-row{display:none}
   body{background:#fff}
   .tabpanel[hidden]{display:block !important}
 }
@@ -651,7 +634,6 @@ section:focus{outline:none}
   <div class="wrap">
     <div class="section-head">
       <h2 id="exp-title"><span class="idx">01</span> Experience</h2>
-      <p class="section-note">Three internships across procurement, MRO operations, and production engineering.</p>
     </div>
 
     <div class="xp">
@@ -730,7 +712,6 @@ section:focus{outline:none}
   <div class="wrap">
     <div class="section-head">
       <h2 id="projects-title"><span class="idx">02</span> Projects</h2>
-      <p class="section-note">Two builds, one forecasting and one optimization. Each card has three tabs: Overview, The Numbers, and How It Was Built. Both have a live dashboard and the code on GitHub.</p>
     </div>
 
     <div class="projects">
@@ -849,116 +830,6 @@ section:focus{outline:none}
             distribution center variability by up to <span class="num" data-to="10.6" data-dec="1" data-suffix="×">10.6×</span>
             over 30–45 day international lead times, and replaced it with empirical quantile based sizing.
           </p>
-
-          <figure class="diagram-block" style="margin-block-end:0">
-            <figcaption class="diagram-cap">
-              <span><b>Network structure:</b> supplier → 3 distribution centers → 10 stores</span>
-              <span>Hover a node to see its connections</span>
-            </figcaption>
-
-            <div class="diagram-wrap">
-              <svg class="diagram" id="net" viewBox="0 0 660 344" role="group" aria-label="Interactive diagram of the supply network: one supplier feeding three distribution centers, which serve ten stores between them.">
-
-                <!-- edges: supplier -> DCs -->
-                <path class="edge" data-edge="SUP|DC1" d="M74,172 H180 V80 H288"/>
-                <path class="edge" data-edge="SUP|DC2" d="M74,172 H288"/>
-                <path class="edge" data-edge="SUP|DC3" d="M74,172 H180 V262 H288"/>
-
-                <!-- edges: DC1 -> stores -->
-                <path class="edge" data-edge="DC1|S01" d="M312,80 H430 V28 H571"/>
-                <path class="edge" data-edge="DC1|S02" d="M312,80 H430 V60 H571"/>
-                <path class="edge" data-edge="DC1|S03" d="M312,80 H430 V92 H571"/>
-                <!-- edges: DC2 -> stores -->
-                <path class="edge" data-edge="DC2|S04" d="M312,172 H452 V124 H571"/>
-                <path class="edge" data-edge="DC2|S05" d="M312,172 H452 V156 H571"/>
-                <path class="edge" data-edge="DC2|S06" d="M312,172 H452 V188 H571"/>
-                <path class="edge" data-edge="DC2|S07" d="M312,172 H452 V220 H571"/>
-                <!-- edges: DC3 -> stores -->
-                <path class="edge" data-edge="DC3|S08" d="M312,262 H430 V252 H571"/>
-                <path class="edge" data-edge="DC3|S09" d="M312,262 H430 V284 H571"/>
-                <path class="edge" data-edge="DC3|S10" d="M312,262 H430 V316 H571"/>
-
-                <!-- supplier -->
-                <g class="node supplier" data-node="SUP" tabindex="0" role="button"
-                   data-title="Supplier" data-meta="Upstream source · feeds all 3 distribution centers · 30–45 day international lead times">
-                  <rect class="shape" x="48" y="159" width="26" height="26"/>
-                  <rect class="focus-ring" x="42" y="153" width="38" height="38"/>
-                  <text class="label" x="61" y="203" text-anchor="middle">Supplier</text>
-                </g>
-
-                <!-- distribution centers -->
-                <g class="node dc" data-node="DC1" tabindex="0" role="button"
-                   data-title="DC-1 · Region 1" data-meta="Distribution center · 30–45 day international lead time · serves 3 stores · pooled safety stock">
-                  <rect class="shape" x="288" y="68" width="24" height="24" transform="rotate(45 300 80)"/>
-                  <rect class="focus-ring" x="281" y="61" width="38" height="38"/>
-                  <text class="label" x="300" y="118" text-anchor="middle">DC-1 · R1</text>
-                </g>
-                <g class="node dc" data-node="DC2" tabindex="0" role="button"
-                   data-title="DC-2 · Region 2" data-meta="Distribution center · 30–45 day international lead time · serves 4 stores · pooled safety stock">
-                  <rect class="shape" x="288" y="160" width="24" height="24" transform="rotate(45 300 172)"/>
-                  <rect class="focus-ring" x="281" y="153" width="38" height="38"/>
-                  <text class="label" x="300" y="210" text-anchor="middle">DC-2 · R2</text>
-                </g>
-                <g class="node dc" data-node="DC3" tabindex="0" role="button"
-                   data-title="DC-3 · Region 3" data-meta="Distribution center · 30–45 day international lead time · serves 3 stores · pooled safety stock">
-                  <rect class="shape" x="288" y="250" width="24" height="24" transform="rotate(45 300 262)"/>
-                  <rect class="focus-ring" x="281" y="243" width="38" height="38"/>
-                  <text class="label" x="300" y="300" text-anchor="middle">DC-3 · R3</text>
-                </g>
-
-                <!-- stores -->
-                <g class="node store" data-node="S01" tabindex="0" role="button" data-title="Store S01" data-meta="Downstream echelon · replenished from DC-1 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="28" r="8"/><circle class="focus-ring" cx="580" cy="28" r="14"/>
-                  <text class="label" x="596" y="32">S01</text>
-                </g>
-                <g class="node store" data-node="S02" tabindex="0" role="button" data-title="Store S02" data-meta="Downstream echelon · replenished from DC-1 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="60" r="8"/><circle class="focus-ring" cx="580" cy="60" r="14"/>
-                  <text class="label" x="596" y="64">S02</text>
-                </g>
-                <g class="node store" data-node="S03" tabindex="0" role="button" data-title="Store S03" data-meta="Downstream echelon · replenished from DC-1 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="92" r="8"/><circle class="focus-ring" cx="580" cy="92" r="14"/>
-                  <text class="label" x="596" y="96">S03</text>
-                </g>
-                <g class="node store" data-node="S04" tabindex="0" role="button" data-title="Store S04" data-meta="Downstream echelon · replenished from DC-2 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="124" r="8"/><circle class="focus-ring" cx="580" cy="124" r="14"/>
-                  <text class="label" x="596" y="128">S04</text>
-                </g>
-                <g class="node store" data-node="S05" tabindex="0" role="button" data-title="Store S05" data-meta="Downstream echelon · replenished from DC-2 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="156" r="8"/><circle class="focus-ring" cx="580" cy="156" r="14"/>
-                  <text class="label" x="596" y="160">S05</text>
-                </g>
-                <g class="node store" data-node="S06" tabindex="0" role="button" data-title="Store S06" data-meta="Downstream echelon · replenished from DC-2 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="188" r="8"/><circle class="focus-ring" cx="580" cy="188" r="14"/>
-                  <text class="label" x="596" y="192">S06</text>
-                </g>
-                <g class="node store" data-node="S07" tabindex="0" role="button" data-title="Store S07" data-meta="Downstream echelon · replenished from DC-2 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="220" r="8"/><circle class="focus-ring" cx="580" cy="220" r="14"/>
-                  <text class="label" x="596" y="224">S07</text>
-                </g>
-                <g class="node store" data-node="S08" tabindex="0" role="button" data-title="Store S08" data-meta="Downstream echelon · replenished from DC-3 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="252" r="8"/><circle class="focus-ring" cx="580" cy="252" r="14"/>
-                  <text class="label" x="596" y="256">S08</text>
-                </g>
-                <g class="node store" data-node="S09" tabindex="0" role="button" data-title="Store S09" data-meta="Downstream echelon · replenished from DC-3 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="284" r="8"/><circle class="focus-ring" cx="580" cy="284" r="14"/>
-                  <text class="label" x="596" y="288">S09</text>
-                </g>
-                <g class="node store" data-node="S10" tabindex="0" role="button" data-title="Store S10" data-meta="Downstream echelon · replenished from DC-3 · 95% service level constraint">
-                  <circle class="shape" cx="580" cy="316" r="8"/><circle class="focus-ring" cx="580" cy="316" r="14"/>
-                  <text class="label" x="596" y="320">S10</text>
-                </g>
-              </svg>
-
-              <div class="tip" id="tip" role="status" aria-live="polite"></div>
-            </div>
-          </figure>
-
-          <p class="sr-only">
-            Network structure in text: a single supplier feeds three distribution centers.
-            DC-1 in Region 1 serves stores S01 to S03. DC-2 in Region 2 serves stores S04 to S07.
-            DC-3 in Region 3 serves stores S08 to S10. All replenishment from the supplier runs on
-            30 to 45 day international lead times, and every store is held to a 95% service level constraint.
-          </p>
         </div>
 
         <div class="tabpanel" role="tabpanel" id="p2-p2" aria-labelledby="p2-t2" tabindex="0" hidden>
@@ -1014,7 +885,6 @@ section:focus{outline:none}
   <div class="wrap">
     <div class="section-head">
       <h2 id="process-title"><span class="idx">03</span> How it was built</h2>
-      <p class="section-note">The same write-up appears in the "How It Was Built" tab on each project card above.</p>
     </div>
 
     <div class="process-grid">
@@ -1057,7 +927,6 @@ section:focus{outline:none}
   <div class="wrap">
     <div class="section-head">
       <h2 id="skills-title"><span class="idx">04</span> Skills</h2>
-      <p class="section-note">The operations background and the analytics stack behind the projects.</p>
     </div>
 
     <div class="skill-groups">
@@ -1109,7 +978,6 @@ section:focus{outline:none}
   <div class="wrap">
     <div class="section-head">
       <h2 id="edu-title"><span class="idx">05</span> Education</h2>
-      <p class="section-note">Coursework in optimization and supply chain management at USC.</p>
     </div>
 
     <ul class="record reveal">
@@ -1139,7 +1007,6 @@ section:focus{outline:none}
   <div class="wrap">
     <div class="section-head">
       <h2 id="contact-title"><span class="idx">06</span> Get in touch</h2>
-      <p class="section-note">Based in Los Angeles, CA.</p>
     </div>
 
     <div class="contact-grid">
@@ -1334,82 +1201,7 @@ section:focus{outline:none}
   });
 
   /* ----------------------------------------------------------
-     3. Network diagram
-     ---------------------------------------------------------- */
-  (function(){
-    var svg = document.getElementById("net");
-    var tip = document.getElementById("tip");
-    if (!svg || !tip) return;
-
-    var wrap  = svg.parentNode;
-    var nodes = Array.prototype.slice.call(svg.querySelectorAll(".node"));
-    var edges = Array.prototype.slice.call(svg.querySelectorAll(".edge"));
-
-    function clear(){
-      svg.classList.remove("is-active");
-      nodes.forEach(function(n){ n.classList.remove("hl"); });
-      edges.forEach(function(e){ e.classList.remove("hl"); });
-      tip.classList.remove("show");
-      tip.textContent = "";
-    }
-
-    function highlight(node){
-      var id = node.getAttribute("data-node");
-      var related = {};
-      related[id] = true;
-
-      edges.forEach(function(edge){
-        var pair = edge.getAttribute("data-edge").split("|");
-        if (pair[0] === id || pair[1] === id) {
-          edge.classList.add("hl");
-          related[pair[0]] = true;
-          related[pair[1]] = true;
-        } else {
-          edge.classList.remove("hl");
-        }
-      });
-
-      nodes.forEach(function(n){
-        n.classList.toggle("hl", !!related[n.getAttribute("data-node")]);
-      });
-      svg.classList.add("is-active");
-
-      /* tooltip */
-      tip.innerHTML = "<b></b><span></span>";
-      tip.querySelector("b").textContent = node.getAttribute("data-title");
-      tip.querySelector("span").textContent = node.getAttribute("data-meta");
-
-      var box  = node.getBoundingClientRect();
-      var host = wrap.getBoundingClientRect();
-      var x = box.left - host.left + box.width / 2;
-      var y = box.top  - host.top;
-
-      tip.style.left = "0px";
-      tip.style.top  = "0px";
-      tip.classList.add("show");
-
-      var tw = tip.offsetWidth;
-      var pad = 8;
-      x = Math.max(tw / 2 + pad, Math.min(x, host.width - tw / 2 - pad));
-      tip.style.left = x + "px";
-      tip.style.top  = y + "px";
-    }
-
-    nodes.forEach(function(node){
-      node.addEventListener("mouseenter", function(){ highlight(node); });
-      node.addEventListener("focus", function(){ highlight(node); });
-      node.addEventListener("blur", clear);
-      node.addEventListener("keydown", function(e){
-        if (e.key === "Escape") { clear(); node.blur(); }
-      });
-    });
-
-    svg.addEventListener("mouseleave", clear);
-    svg.addEventListener("touchstart", function(){}, { passive: true });
-  })();
-
-  /* ----------------------------------------------------------
-     4 + 5. Sticky nav scrollspy and smooth scroll
+     3 + 4. Sticky nav scrollspy and smooth scroll
      ---------------------------------------------------------- */
   (function(){
     var links = Array.prototype.slice.call(document.querySelectorAll("#nav a"));
